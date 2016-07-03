@@ -15,21 +15,28 @@ knitr::opts_chunk$set(echo = TRUE)
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 ### Lets load the data
-Load the data (i.e. read.csv())
-Process/transform the data
 
-```{r cars}
-summary(cars)
+poweruse$DateAsDate <- as.Date(poweruse$Date,"%d/%m/%Y")
+> dailymean <- tapply(activity$steps,activity$date,FUN=mean)
+> hist(dailymean)
+> dailysum <- tapply(activity$steps,activity$date,FUN=sum)
+> hist(dailysum)
+
+```{r load}
+activity = read.csv("activity.csv")
+head(activity,3)
 ```
 
 ### What is mean total number of steps taken per day?
 
-Calculate the total number of steps taken per day
-Make a histogram of the total number of steps taken each day
-Calculate and report the mean and median of the total number of steps taken per day
+1. Calculate the total number of steps taken per day
+2. Make a histogram of the total number of steps taken each day
+3. The mean and median of the total number of steps taken per day are: 10770 and 10760.
 
-```{r cars}
-summary(cars)
+```{r mean}
+dailysum <- tapply(activity$steps,activity$date,FUN=sum)
+hist(dailysum, breaks=10)
+summary(dailysum)
 ```
 
 ### What is the average daily activity pattern?
@@ -37,7 +44,7 @@ summary(cars)
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
     
-```{r cars}
+```{r daily pattern}
 summary(cars)
 ```
 
@@ -58,7 +65,7 @@ What is the impact of imputing missing data on the estimates of the total daily 
 
 Note: We use the dataset with the filled-in missing values from here down
     
-```{r cars}
+```{r missing values}
 summary(cars)
 ```
 
@@ -70,7 +77,7 @@ Create a new factor variable in the dataset with two levels – “weekday” an
 
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
     
-```{r cars}
+```{r weekends}
 summary(cars)
 ```
 
