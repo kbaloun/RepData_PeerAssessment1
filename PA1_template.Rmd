@@ -12,15 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Week 2 project for Reproducible Research
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
 ### Lets load the data
-
-poweruse$DateAsDate <- as.Date(poweruse$Date,"%d/%m/%Y")
-> dailymean <- tapply(activity$steps,activity$date,FUN=mean)
-> hist(dailymean)
-> dailysum <- tapply(activity$steps,activity$date,FUN=sum)
-> hist(dailysum)
 
 ```{r load}
 activity = read.csv("activity.csv")
