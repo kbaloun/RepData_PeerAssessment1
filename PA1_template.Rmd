@@ -41,32 +41,36 @@ summary(dailysum)
 
 ### What is the average daily activity pattern?
 
-Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+The plot shows the max steps at around interval 600, which would be 10am.
     
 ```{r daily pattern}
-summary(cars)
+plot(activity$interval, activity$steps, type="l")
 ```
 
 ### Let's impute missing values
 
-The presence of missing days may introduce bias into some calculations or summaries of the data.
+1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-Create a new dataset that is equal to the original dataset but with the missing data filled in.
+4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.  Do these values differ, so were the missing days introducing any bias? 
 
-Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
-
-Do these values differ, so were the missing days introducing any bias? 
 What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-Note: We use the dataset with the filled-in missing values from here down
+The original data set contained 2304 NA step fields, but they did not impact the visible plot nor the summary statistics of mean/median for the data.  My strategy for replacing the missing values was just to remove them from the data set, as this seems to maintain the most integrity of the raw data.  Interpolating for missing data doesn't create more real data.
+
+Note: We use the dataset with the removed missing values from here down
     
 ```{r missing values}
-summary(cars)
+noNAactivity <- activity[!is.na(activity$steps),]
+summary(noNAactivity)
+summary(activity)
+plot(noNAactivity$interval, noNAactivity$steps, type="l")
 ```
 
 ### Are there differences in activity patterns between weekdays and weekends?
@@ -78,16 +82,16 @@ Create a new factor variable in the dataset with two levels – “weekday” an
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
     
 ```{r weekends}
-summary(cars)
+noNAactivity$daytype <- c("weekday", "weekend")
+noNAactivity$daytype <- as.factor(noNAactivity$daytype)
+noNAactivity$date <- as.Date(noNAactivity$date)
+noNAactivity$dayOfWeek <- weekdays(noNAactivity$date)
+WendActivity <- subset(noNAactivity, grepl("^S", noNAactivity$dayOfWeek), )
+WdayActivity <- subset(noNAactivity, !grepl("^S", noNAactivity$dayOfWeek), )
+plot(WendActivity$interval, WendActivity$steps, type="l")
+plot(WdayActivity$interval, WdayActivity$steps, type="l")
 ```
 
 
-## Including Plots
+In summary, weekday activity begins suddenly and earlier, and weekend activity is much less intense.
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-In summary,
